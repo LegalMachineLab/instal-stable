@@ -1,0 +1,28 @@
+institution art20gdpr;
+
+type Subject;
+type Controller;
+type Data;
+
+exogenous event personal_data(Data, Subject);
+exogenous event processing_by_consent(Data, Controller);
+exogenous event automated_processing(Data);
+
+inst event arrives(Person);
+inst event greetsroom(Person);
+inst event socialdeadline;
+
+violation event get_fine(Controller);
+
+fluent has_right_portability(Subject, Data, Controller);
+
+obligation fluent obl(provide_data(Controller), deadline, get_fine(Controller));
+
+enterroom(A) generates arrives(A);
+wave(A) generates greetsroom(A);
+timepassed generates socialdeadline;
+
+arrives(A) initiates in_room(A), obl(greetsroom(A),socialdeadline,rude(A)), perm(wave(A)), pow(wave(A)), perm(greetsroom(A));
+arrives(A) terminates pow(enterroom(A));
+
+greetsroom(A) terminates perm(greetsroom(A));
