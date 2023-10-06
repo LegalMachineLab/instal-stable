@@ -1,2 +1,2 @@
-observed(enterroom(me))
+observed(stipulates_contract(name, marco))
 observed(timepassed)
