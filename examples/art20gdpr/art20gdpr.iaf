@@ -1,6 +1,1 @@
-initially(perm(enterroom(me)), greeting)
-initially(perm(arrives(me)), greeting)
-initially(pow(enterroom(me)), greeting)
-initially(perm(timepassed), greeting)
-initially(pow(timepassed), greeting)
-initially(perm(socialdeadline), greeting)
+initially(perm(stipulate_contract(me)), art20gdpr)

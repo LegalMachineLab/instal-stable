@@ -4,11 +4,11 @@ type Subject;
 type Controller;
 type Data;
 
-exogenous event stipulates_contract(Data, Subject);
-exogenous event processing_by_consent(Data, Controller);
-exogenous event automated_processing(Data);
+exogenous event stipulates_contract;
+exogenous event processing_by_consent;
+exogenous event request_portability
 
-inst event arrives(Person);
+inst event start_processing;
 inst event greetsroom(Person);
 inst event socialdeadline;
 
@@ -18,11 +18,10 @@ fluent has_right_portability(Subject, Data, Controller);
 
 obligation fluent obl(provide_data(Controller), deadline, get_fine(Controller));
 
-enterroom(A) generates arrives(A);
-wave(A) generates greetsroom(A);
+stipulates_contract generates start_processing;
+request_portability generates ex_right if has_right_portability
 timepassed generates socialdeadline;
 
-arrives(A) initiates in_room(A), obl(greetsroom(A),socialdeadline,rude(A)), perm(wave(A)), pow(wave(A)), perm(greetsroom(A));
-arrives(A) terminates pow(enterroom(A));
+start_processing initiates obl(provide_data(Controller), deadline, get_fine(Controller));
 
 greetsroom(A) terminates perm(greetsroom(A));
