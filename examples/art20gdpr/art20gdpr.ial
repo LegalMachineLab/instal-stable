@@ -2,30 +2,37 @@ institution art20gdpr;
 
 type Subject;
 type Controller;
+type Controller1;
 type Data;
 
-exogenous event stipulates_contract;
+exogenous event stipulates_contract(Data, Subject);
 exogenous event processing_by_consent;
-exogenous event request_portability;
+exogenous event request_transfer(Subject, Controller, Controller1);
 exogenous event timepassed;
 
 inst event provide_data(Controller);
 inst event deadline;
 inst event legitimate_processing(Data, Subject, Controller);
+inst event article20paragraph2(Subject, Controller, Controller1);
+inst event transfer_data(Controller, Controller1);
 
 violation event get_fine(Controller);
 
 fluent has_right_portability(Subject, Data, Controller);
 
 obligation fluent obl(provide_data(Controller), deadline, get_fine(Controller));
+obligation fluent obl(transfer_data(Controller, Controller1), deadline, get_fine(Controller));
 
 stipulates_contract(Data, Subject) generates legitimate_processing(Data, Subject, Controller);
 timepassed generates deadline;
+request_transfer(Subject, Controller, Controller1) generates article20paragraph2(Subject, Controller, Controller1);
 
 legitimate_processing(Data, Subject, Controller) initiates obl(provide_data(Controller), deadline, get_fine(Controller));
 legitimate_processing(Data, Subject, Controller) initiates has_right_portability(Subject, Data, Controller);
+article20paragraph2(Subject, Controller, Controller1) initiates obl(transfer_data(Controller, Controller1), deadline, get_fine(Controller));
 
 initially perm(stipulates_contract(Data, Subject)), pow(stipulates_contract(Data, Subject));
 initially perm(timepassed), pow(timepassed);
 initially perm(legitimate_processing(Data, Subject, Controller));
 initially perm(deadline);
+initially perm(request_transfer(Subject, Controller, Controller1)), pow(request_transfer(Subject, Controller, Controller1));

@@ -1,2 +1,3 @@
 observed(stipulates_contract(name, marco))
 observed(timepassed)
+observed(request_transfer(marco, facebook, apple))
