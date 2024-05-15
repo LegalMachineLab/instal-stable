@@ -1,0 +1,3 @@
+observed(stipulates_contract(galileo, apple))
+observed(portability_request(galileo, apple))
+observed(provide_data(apple, galileo))

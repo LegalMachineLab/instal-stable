@@ -1,0 +1,55 @@
+institution art20gdpr;
+
+type Subject;
+type Data;
+type Controller;
+type Role;
+
+exogenous event stipulates_contract(Subject, Controller);
+exogenous event portability_request(Subject, Controller);
+exogenous event timepassed;
+exogenous event provide_data(Controller, Subject);
+exogenous event direct_transfer_request(Subject, Controller, Controller);
+
+
+inst event response(Subject);
+inst event legitimate_processing(Subject);
+inst event deadline;
+inst event request_art20_1(Subject);
+inst event request_art20_2(Subject, Controller, Controller);
+inst event transfer_data(Controller, Controller);
+
+
+violation event get_fine;
+
+fluent role(Controller, Role);
+fluent has_right_portability;
+
+obligation fluent obl(response(Subject), deadline, get_fine);
+obligation fluent obl(transfer_data(Controller, Controller), deadline1, get_fine);
+
+direct_transfer_request(Subject, Sender, Receiver) generates request_art20_2(Subject, Sender, Receiver) if not role(Sender, sender);
+
+stipulates_contract(Subject, Controller) generates legitimate_processing(Subject);
+portability_request(Subject, Controller) generates request_art20_1(Subject) if has_right_portability;
+provide_data(Controller, Subject) generates response(Subject);
+timepassed generates deadline;
+
+legitimate_processing(Subject) initiates has_right_portability;
+legitimate_processing(Subject) initiates pow(portability_request(Subject, Controller)), perm(portability_request(Subject, Controller)), perm(request_art20_1(Subject)), perm(request_art20_2(Subject, Sender, Receiver)), pow(direct_transfer_request(Subject, Sender, Receiver)), perm(direct_transfer_request(Subject, Sender, Receiver));
+request_art20_2(Subject, Sender, Receiver) initiates role(Sender, sender), role(Receiver, receiver);
+
+request_art20_2(Subject, Sender, Receiver) initiates obl(transfer_data(Sender, Receiver), deadline, get_fine) if Sender != Receiver;
+request_art20_1(Subject) initiates obl(response(Subject), deadline, get_fine);
+
+
+
+
+
+
+initially perm(stipulates_contract(Subject, Controller)), pow(stipulates_contract(Subject, Controller));
+initially perm(legitimate_processing(Subject));
+initially perm(provide_data(Controller, Subject));
+initially pow(provide_data(Controller, Subject));
+initially perm(response(Subject));
+initially perm(transfer_data(Sender, Receiver)) if Sender != Receiver;

@@ -1,0 +1,2 @@
+observed(stipulates_contract(marco, google))
+observed(direct_transfer_request(marco, google, apple))

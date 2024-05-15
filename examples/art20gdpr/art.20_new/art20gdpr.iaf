@@ -1,3 +1,6 @@
 initially(perm(stipulates_contract(me)), art20gdpr)
+initially(perm(timepassed), art20gdpr)
+initially(pow(timepassed), art20gdpr)
+initially(perm(deadline), art20gdpr)
 initially(perm(provide_data(me)), art20gdpr)
 initially(pow(provide_data(me)), art20gdpr)

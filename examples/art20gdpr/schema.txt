@@ -1,0 +1,46 @@
+1.
+Stipula contratto --> genera --> portability right
+portability right includes: 
+        get Data
+        get data transferred to other Controller
+
+2.
+Subject --> request_transfer
+controller --> has obligation of transfer to other controller
+
+
+3.
+time passes without controller transferring
+controller --> Violation
+
+
+
+4.
+Controller_role(Controller, sender/receiver) --> definito dalla richiesta del Subject
+
+
+
+NOTE
+- azioni si leggono dall'alto verso il basso;
+- azione observed senza initially power risulta come occurred(unpowered..)
+- azione observed senza initially perm risulta come occurred(vilo..)
+- non capisco perchè ci rimane un occurred("action") anche dopo che la  stessa è observed
+- anche inst event devono essere perm, altrimenti occurred(viol..)
+- quando inst o exogen event sono viol o unpowered non triggerano conseguenze
+- non fatto per applicare le stesse norme a più contesti diversi. Piuttosto, monitorare varie consecuzio di eventi che  occorrono nello stesso contesto.
+- si possono metter i fluent come IF di "initiate"
+- se un inst genera un fluent il quale è al contempo un IF di un altro intiate , non funge.
+- PROBLEMA QUI 
+
+        << request_art20_2(Subject, Sender, Receiver) initiates obl(transfer_data(Sender, Receiver), deadline, get_fine) >> 
+  non unifica le variabili. Essendo Sender e Receiver tutti e due type Controller, genera 
+
+        obl(transfer_data(apple,apple))
+        obl(transfer_data(google,google)).
+
+- INVECE QUI
+
+        request_art20_2(Subject, Sender, Receiver) initiates role(Sender, sender), role(Receiver, receiver)
+qui però unifica bene .. boh
+
+
